@@ -12,8 +12,8 @@ export const CATEGORIES = [
     { id: 1, name: "Men", icon: "man-outline" },
     { id: 2, name: "Women", icon: "woman-outline" },
     { id: 3, name: "Kids", icon: "happy-outline" },
-    { id: 4, name: "Shoes", icon: "footsteps-outline" },
-    { id: 5, name: "Bag", icon: "briefcase-outline" },
+    { id: 4, name: "OldAge", icon: "footsteps-outline" },
+    { id: 5, name: "Tools", icon: "briefcase-outline" },
     { id: 6, name: "Other", icon: "grid-outline" },
 ];
 
