@@ -20,6 +20,7 @@ export default function TabLayout() {
              paddingBottom: 8,
         }
     }}
+
     >
         <Tabs.Screen name='index' options={{
             tabBarIcon: ({ color, focused })=> <Ionicons 
