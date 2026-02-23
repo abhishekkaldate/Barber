@@ -52,6 +52,8 @@ useEffect(()=>{
             style={{width: width-32}}>
               <Image source={{uri: banner.image}} className='w-full h-full' resizeMode='cover'/>
 
+              <View className='absolute inset-0 bg-black/30'/>
+
               <View className='absolute bottom-4 left-4 z-10'>
                 <Text className='text-white text-2xl font-bold'>{banner.title}</Text>
                 <Text className='text-white text-sm font-medium'>{banner.subtitle}</Text>
@@ -59,7 +61,7 @@ useEffect(()=>{
                 <Text className='text-primary font-bold text-sm'>Get Now</Text>
                 </TouchableOpacity>
               </View>
-               <View className='absolute inset-0 bg-black/20'/>
+
             </View>
           ))}
         </ScrollView>
