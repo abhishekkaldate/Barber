@@ -1055,12 +1055,12 @@ export const dummyUser = {
     _id: "69819801a872c913f84d13f4",
     name: "John Doe",
     email: "john@example.com",
-    firstName: "John",
-    lastName: "Doe",
-    imageUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=240",
+    firstName: "Abhishek",
+    lastName: "Kaldate",
+    imageUrl: "https://instasize.com/p/d0e0fd0e605200ad9b90edec056525ac92749803dc58323d126b48de692efd2e",
     emailAddresses: [
         {
-            emailAddress: "john@example.com",
+            emailAddress: "abhishek.kaldate@example.com",
         },
     ],
     clerkId: "user_396E235",
