@@ -1,5 +1,5 @@
 import { verifyWebhook } from "@clerk/express/webhooks"
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 import User from "../models/User.js"
 
 
@@ -29,6 +29,9 @@ export const clerkWebhook = async (req: Request, res: Response)=> {
 
   } catch (err) {
     console.error('Error verifying webhook:', err)
-    return new Response('Error verifying webhook', { status: 400 })
+    return res.status(400).json({
+  success: false,
+  message: "Error verifying webhook"
+});
   }
 }
