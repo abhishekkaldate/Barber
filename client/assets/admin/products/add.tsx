@@ -64,7 +64,7 @@ export default function AddProduct() {
 
                 {/* PRICE */}
                 <Text className="text-secondary text-xs font-bold mb-1 uppercase">
-                    Price ($) *
+                    Price (₹) *
                 </Text>
                 <TextInput
                     className="bg-surface p-3 rounded-lg mb-4 text-primary"

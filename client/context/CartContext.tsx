@@ -1,6 +1,9 @@
-import { dummyCart } from '@/assets/assets';
+
+import api from '@/constants/api';
 import { Product } from '@/constants/types';
+import { useAuth } from '@clerk/clerk-expo';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import Toast from 'react-native-toast-message';
 
 export type CartItem = {
     id: string;
@@ -26,44 +29,147 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({children} : {children: ReactNode}){
 
+    const {getToken, isSignedIn} = useAuth()
+    
     const [cartItems, setCartItems] = useState<CartItem[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [cartTotal, setCartTotal] = useState(0)
     
     const fetchCart = async () => {
-        setIsLoading(true)
-        const serverCart = dummyCart;
-        const mappedItems: CartItem[] = serverCart.items.map((item: any) => ({
-            id: item.product._id,
-            productId: item.product._id,
-            product: item.product,
-            quantity: item.quantity,
-            size: item?.size || 'M',
-            price: item.price
-      }));
-        setCartItems(mappedItems);
-        setCartTotal(serverCart.totalAmount);
-        setIsLoading(false)
+
+        try {
+            setIsLoading(true);
+            const token = await getToken()
+            const {data} = await api.get('/cart', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if(data.success && data.data){
+                const serverCart = data.data;
+                const mappedItems: CartItem[] = serverCart.items.map((item: any) => ({
+                id: item.product._id,
+                productId: item.product._id,
+                product: item.product,
+                quantity: item.quantity,
+                size: item?.size || 's',
+                price: item.price
+                }));
+                setCartItems(mappedItems);
+                setCartTotal(serverCart.totalAmount);
+                
+            }
+        } catch (error) {
+            console.error("Failed to fetch cart:", error)
+        }finally{
+            setIsLoading(false)
+        }               
     }
 
     const addToCart = async (product: Product, size: string) => {
-
+        if(!isSignedIn){
+            return Toast.show({
+                text1: 'Please login to fetch haircut in cart',
+                type: 'error',
+            })
+        }
+        try {
+            setIsLoading(true);
+            const token = await getToken()
+            const {data} = await api.post('/cart/add', {productId: product._id, quantity: 1, size}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if(data.success){
+                await fetchCart()
+            }
+        } catch (error) {
+            console.error("Failed to add haircut in cart:", error)
+            Toast.show({
+                text1: 'Failed to add haircut to cart',
+                type: 'error',
+            });
+        }finally{
+            setIsLoading(false);
+        }
     }
     const removeFromCart = async (productId: string, size: string) => {
-        
+        if(!isSignedIn) return;
+
+        try {
+            setIsLoading(true);
+            const token = await getToken();
+            const {data} = await api.delete(`/cart/item/${productId}?size=${size}`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            
+            if(data.success){
+                await fetchCart()
+            }
+        } catch (error) {
+            console.error("Failed to remove haircut from cart", error)
+        }finally{
+            setIsLoading(false);
+        }
     }
+
     const updateQuantity = async (productId: string, quantity: number, size: string) => {
-        
+        if(!isSignedIn) return;
+        if (quantity < 1) return;
+
+        try {
+            setIsLoading(true);
+            const token = await getToken();
+            const {data} = await api.put(`/cart/item/${productId}`,{ quantity, size },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if(data.success){
+                await fetchCart()
+            }
+        } catch (error) {
+            console.error("Failed to update haircut from cart", error)
+        }finally{
+            setIsLoading(false);
+        }
+    
     }
     const clearCart = async () => {
-        
+        if(!isSignedIn) return;
+
+        try {
+            setIsLoading(true);
+            const token = await getToken();
+            const {data} = await api.delete(`/cart`,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if(data.success){
+                setCartItems([]);
+                setCartTotal(0);
+            }
+        } catch (error) {
+            console.error("Failed to clear cart", error)
+        }finally{
+            setIsLoading(false);
+        }
     }
 
     const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
     useEffect(()=>{
-        fetchCart();
-    },[])
+        if(isSignedIn){
+            fetchCart();
+        }else{
+            setCartItems([]);
+            setCartTotal(0)
+        }      
+    },[isSignedIn])
     
 
     return (

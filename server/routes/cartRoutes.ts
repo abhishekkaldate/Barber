@@ -14,9 +14,9 @@ CartRouter.post('/add', protect, addToCart);
 CartRouter.put('/item/:productId', protect, updateCartItem);
 
 //remove cart
-CartRouter.delete('/', protect, removeCartItem);
+CartRouter.delete('/item/:productId', protect, removeCartItem);
 
 //Clear cart
-CartRouter.delete('/', protect, clearCart);
+CartRouter.delete('/clear', protect, clearCart);
 
 export default CartRouter;
