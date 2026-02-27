@@ -28,17 +28,17 @@ export const getOrders = async (req: Request, res: Response)=>{
 export const getOrder = async (req: Request, res: Response)=>{
     try {
 
-        const order= await Order.findById(req.params.id).populate('items.product',"name images");
+        const order = await Order.findById(req.params.id).populate('items.product',"name images");
 
         if(!order){
            return res.status(404).json({ success: false, message: "Order not found" })                           
         };
 
-        if(order.user.toString() !== req.user._id.ToString() && req.user.role !== "admin"){
+        if(order.user.toString() !== req.user._id.toString() && req.user.role !== "admin"){
            return res.status(403).json({ success: false, message: "Not authorized" })                           
         }
 
-        res.status(404).json({ success: true, data: order });                         
+        res.json({ success: true, data: order });                         
        
         
     } catch (error: any) {
@@ -64,7 +64,7 @@ export const createOrder = async (req: Request, res: Response)=>{
             if(!product || product.stock < item.quantity){
                 return res.status(400).json({
                     success: false,
-                    message: `Insufficient stock for${(item.product as any).name}`,
+                    message: `Insufficient stock for ${(item.product as any).name}`,
                 })
             }
 
@@ -116,6 +116,7 @@ export const createOrder = async (req: Request, res: Response)=>{
 //update
 //PUT /api/orders/:id/status
 export const updateOrderStatus = async (req: Request, res: Response)=>{
+
     try {
         const { orderStatus, paymentStatus } = req.body;
         const order = await Order.findById(req.params.id)
@@ -135,6 +136,27 @@ export const updateOrderStatus = async (req: Request, res: Response)=>{
     }
 }
 
+
+
+//     try {
+//         const order = await Order.findById(req.params.id).populate('items.product', "name images");
+
+//         if (!order) {
+//             return res.status(404).json({ success: false, message: "Order not found" });
+//         }
+
+//         if (order.user.toString() !== req.user._id.toString() && req.user.role !== "admin") {
+//             return res.status(403).json({ success: false, message: "Not authorized" });
+//         }
+
+//         // CHANGE THIS LINE: 404 -> 200
+//         res.status(200).json({ success: true, data: order }); 
+       
+//     } catch (error: any) {
+//         res.status(500).json({ success: false, message: error.message });                            
+//     }
+// }
+
 //get all
 //GET /api/orders/admin/all
 export const getAllOrders = async (req: Request, res: Response)=>{
@@ -146,7 +168,6 @@ export const getAllOrders = async (req: Request, res: Response)=>{
         if(status) query.orderStatus = status;
 
         const total = await Order.countDocuments(query)
-
         const orders = await Order.find(query).populate("user", "name email").populate("items.product", "name").sort("-createdAt").skip((Number(page) - 1) * Number(limit));
 
         res.json({

@@ -5,8 +5,14 @@ import { COLORS } from "@/constants";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { CATEGORIES } from "@/constants";
+import { useRouter } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
+import api from "@/constants/api";
 
 export default function AddProduct() {
+
+    const router = useRouter()
+    const {getToken} = useAuth()
 
     const [submitting, setSubmitting] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -46,7 +52,68 @@ export default function AddProduct() {
             });
             return;
         }
+        try {
+            setSubmitting(true);
+            const token = await getToken()
+            const formData = new FormData();
+
+            //Basic
+            const fields ={
+                name, description, price, stock: stock || '0',
+                category, isFeatured: String(isFeatured), sizes
+            }
+
+            Object.entries(fields).forEach(([key, value])=>
+            formData.append(key, value))
+
+            //images
+            for (const [i, uri] of images.entries()) {
+  const filename = `image-${i}.jpg`;
+
+  formData.append("images", {
+    uri: Platform.OS === "android" ? uri : uri.replace("file://", ""),
+    name: filename,
+    type: "image/jpeg",
+  } as any);
+}
+
+                // formData.append("images", {uri, name: filename, 
+                //     type: "image/jpeg"} as any)
+
+//                 formData.append("images", {
+//   uri: Platform.OS === "android" ? uri : uri.replace("file://", ""),
+//   name: filename,
+//   type: "image/jpeg",
+// } as any);
+
+                const { data } = await api.post("/products", formData, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  },
+});
+
+            if(!data?.success) throw new Error("Upload Failed")
+
+                Toast.show({
+                    type: 'success',
+                    text1: 'Success',
+                    text2: 'Product Created'
+                })
+                router.replace("/admin/products")
+        } catch (error: any) {
+            console.error(error);
+            Toast.show({
+                type: 'error',
+                text1: 'Failed to create product',
+                text2: error.response?.data?.message || 'Something went wrong'
+            })
+        }finally{
+            setSubmitting(false)
+        }
     };
+
+
 
     return (
         <ScrollView className="flex-1 bg-surface p-4">

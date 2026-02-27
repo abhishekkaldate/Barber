@@ -48,7 +48,7 @@ export const updateAddresses = async (req: Request, res: Response)=>{
         }
 
         //Ensure
-        if(addressItem.user.toString() !== req.user._id.ToString()){
+        if(addressItem.user.toString() !== req.user._id.toString()){
                     res.status(401).json({success: false, message: "not authorized"});
         }
 
@@ -79,7 +79,7 @@ export const deleteAddresses = async (req: Request, res: Response)=>{
         }
 
         //Ensure
-        if(address.user.toString() !== req.user._id.ToString()){
+        if(address.user.toString() !== req.user._id.toString()){
                     res.status(401).json({success: false, message: "not authorized"});
         }
 

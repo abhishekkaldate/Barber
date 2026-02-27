@@ -11,6 +11,7 @@ const productSchema = new Schema<IProduct>({
     category: { type: String, required: true, enum: ["Men", "Women", "Kids", "OldAge", "Tools", "Other"], default: "Other" },
     stock: { type: Number, required: true, default: 0, min:0 },
     isFeatured: { type: Boolean, default: true },
+    isActive: { type: Boolean, default: true }
 }, {timestamps: true})
 
 productSchema.index({name: "text", description: "text"})
