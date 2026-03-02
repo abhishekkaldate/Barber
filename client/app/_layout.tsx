@@ -11,7 +11,8 @@ import { tokenCache } from '@clerk/clerk-expo/token-cache'
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <ClerkProvider tokenCache={tokenCache}>
+      <ClerkProvider publishableKey="pk_test_YXNzdXJpbmctZG92ZS0zMC5jbGVyay5hY2NvdW50cy5kZXYk"
+       tokenCache={tokenCache}>
     <CartProvider>
       <WishlistProvider>
         <Stack screenOptions={{ headerShown: false }} />
