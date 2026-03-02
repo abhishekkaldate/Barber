@@ -13,7 +13,7 @@ export default function BarberInfo() {
   onPress={() => setShowInfo(!showInfo)}
   className="mt-3 bg-primary px-4 py-2 rounded-full self-start flex-row items-center"
 >
-  <Text className="text-white font-semibold text-sm mr-2">
+  <Text className="text-white font-semibold text-sm mr-1">
     About Our Barber
   </Text>
 

@@ -1053,8 +1053,8 @@ export const dummyAddress = [
 
 export const dummyUser = {
     _id: "69819801a872c913f84d13f4",
-    name: "John Doe",
-    email: "john@example.com",
+    name: "Abhishek kaldate",
+    email: "abhishekkaldate712@gmail.com.com",
     firstName: "Abhishek",
     lastName: "Kaldate",
     imageUrl: "https://instasize.com/p/d0e0fd0e605200ad9b90edec056525ac92749803dc58323d126b48de692efd2e",
@@ -1063,7 +1063,7 @@ export const dummyUser = {
             emailAddress: "abhishek.kaldate@example.com",
         },
     ],
-    clerkId: "user_396E235",
+    clerkId: "user_3A9TEEHEoqEocvoQAynZHTpo6NG",
     role: "admin",
     publicMetadata: {
         role: "admin",
