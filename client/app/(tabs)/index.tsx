@@ -10,6 +10,7 @@ import { Product } from '@/constants/types'
 import ProductCard from '@/components/ProductCard'
 import api from '@/constants/api'
 
+
 const {width} = Dimensions.get("window")
 
 export default function Home() {
@@ -121,7 +122,8 @@ useEffect(()=>{
         <View className='bg-gray-100 p-6 rounded-2xl mb-20 items-center'>
           <Text className='text-2xl font-bold text-primary mb-2 text-center'>Join the Movement</Text>
           <Text className='text-center text-secondary mb-4'>Instant 10% flat discount your first booking</Text>
-          <TouchableOpacity className='bg-primary w-4/5 py-4 rounded-full items-center'>
+          <TouchableOpacity className='bg-primary w-4/5 py-4 rounded-full items-center'
+          >
             <Text className='text-white font-medium text-base'>Join With Us</Text>
           </TouchableOpacity>
         </View>

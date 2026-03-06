@@ -2,8 +2,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import { CartItemProps } from '@/constants/types'
 import { Ionicons } from '@expo/vector-icons'
-import { COLORS } from '@/constants'
-import { SafeAreaView } from 'react-native-safe-area-context'
+
 import BarberInfo from './knowbarber'
 
 export default function CartItem({ item, onRemove, onUpdateQuantity }: CartItemProps) {

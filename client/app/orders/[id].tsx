@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/header";
 import { COLORS } from "@/constants";
 import type { Order, Product } from "@/constants/types";
-import { dummyOrders } from "@/assets/assets";
+
 import { useAuth } from "@clerk/clerk-expo";
 import api from "@/constants/api";
 
