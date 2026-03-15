@@ -102,7 +102,7 @@ useEffect(()=>{
           <View className='flex-row justify-between items-center mb-4'>
             <Text className='text-xl font-bold text-primary'>Popular</Text>
             <TouchableOpacity onPress={()=> router.push('/shop')}>
-            <Text className='text-secondary text-sm'>See All</Text>
+            <Text className='text-primary text-bold'>See All</Text>
             </TouchableOpacity>
           </View>
               {loading ? (
